@@ -1,13 +1,12 @@
 public class BSTree {
 
-
     /**
      * Insertion of a newNode in the BST maintaining BST properties
      * @param root the root node of the BST
      * @param newNode the new node to be inserted
      * @return the root node of the BST after the insertion
      */
-    Node insert(Node root, Node newNode){
+    static Node insert(Node root, Node newNode){
         if(root == null){
             return newNode;
         }else if(root.key < newNode.key){
@@ -23,13 +22,15 @@ public class BSTree {
      * Visiting the BST in prefix notation printing each node as key:value
      * @param root the root node of the BST
      */
-    void show(Node root){
+    static void show(Node root){
+        // I could use a string builder but probably this is not gonna be used during time calculation
+        // and, given that, i don't wanna decrease code's readability
         if(root != null){
             System.out.print(root.key+":"+root.value+" ");
             show(root.left);
             show(root.right);
         }else{
-            System.out.print("NULL");
+            System.out.print("NULL ");
         }
     }
 
@@ -40,8 +41,8 @@ public class BSTree {
      * @param key the key of the node to be searched. REQUIRED as a key of an existent node
      * @return the node of the given key
      */
-    Node find(Node root, int key){
-        if(root.key == null || root.key == key){
+    static Node find(Node root, int key){
+        if(root == null || root.key == key){
             return root;
         }else if(root.key < key){
             return find(root.right, key);
