@@ -2,9 +2,9 @@ public class AVLTree {
 
     /**
      * Insertion of a newNode in the AVL maintaining AVL properties (performs rotations)
-     * @param root the root node of the BST
+     * @param root the root node of the AVL
      * @param newNode the new node to be inserted
-     * @return the root node of the BST after the insertion
+     * @return the root node of the AVL after the insertion
      */
     static Node insert(Node root, Node newNode){
         if(root == null){
@@ -48,8 +48,8 @@ public class AVLTree {
 
 
     /**
-     * Finding the node of the given key in the BST
-     * @param root the root node of the BST
+     * Finding the node of the given key in the AVL
+     * @param root the root node of the AVL
      * @param key the key of the node to be searched. REQUIRED as a key of an existent node
      * @return the node of the given key
      */
@@ -65,8 +65,8 @@ public class AVLTree {
 
 
     /**
-     * Visiting the BST in prefix notation printing each node as key:value
-     * @param root the root node of the BST
+     * Visiting the AVL in prefix notation printing each node as key:value:height
+     * @param root the root node of the AVL
      */
     static void show(Node root){
         if(root != null){
