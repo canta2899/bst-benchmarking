@@ -2,20 +2,175 @@ public class RBTree {
     // 1 --> RED
     // 0 --> BLACK
 
-    static Node insert(Node root, Node newNode) {
-        if (root == null) {
+
+    /**
+     * Performs the RBTree insertion by inserting a new node and fixing RBTree properties
+     * @param root the root node of the tree
+     * @param newNode the new node that will be inserted
+     * @return the root node after the insertion and the RBTree fix process
+     */
+    static Node insert(Node root, Node newNode){
+        root = regularInsertion(root, newNode);
+        root = RBFix(newNode, root);
+        return root;
+    }
+
+
+    /**
+     * Performs a standard BSTree insertion
+     * @param root the root node
+     * @param newNode the new node that will be inserted
+     * @return the root node after the insertion
+     */
+    static Node regularInsertion(Node root, Node newNode) {
+        if(root == null){
             return newNode;
-        } else if (root.key < newNode.key) {
-            root.right = insert(root.right, newNode);
+        }else if(root.key < newNode.key){
+            root.right = regularInsertion(root.right, newNode);
             root.right.parent = root;
-        } else {
-            root.left = insert(root.left, newNode);
+        }else{
+            root.left = regularInsertion(root.left, newNode);
             root.left.parent = root;
         }
 
         return root;
+    }
 
-        // Applying rotations and colour chaining in order to maintain RBT property
+
+    /**
+     * Fixes tree in order to maintain RBTree properties with recoloring and rotations
+     * @param newNode the new insert Node
+     * @param root the root node of the tree
+     * @return the root node after the tree has been fixed
+     */
+    static Node RBFix(Node newNode, Node root){
+        Object temp;
+        Node parentNewNode = null;
+        Node gpNewNode = null;
+        while ((newNode != root) && (newNode.color != 0) && (newNode.parent.color == 1)) {
+
+            parentNewNode = newNode.parent;
+            gpNewNode = newNode.parent.parent;
+
+            // A
+            if (parentNewNode == gpNewNode.left) {
+
+                Node uncle = gpNewNode.right;
+
+                // 1
+                if (uncle != null && uncle.color == 1) {
+                    gpNewNode.color = 1;
+                    parentNewNode.color = 0;
+                    uncle.color = 0;
+                    newNode = gpNewNode;
+                } else {
+                    // 2
+                    if (newNode == parentNewNode.right) {
+                        root = rotateLeft(root, parentNewNode);
+                        newNode = parentNewNode;
+                        parentNewNode = newNode.parent;
+                    }
+
+                    // 3
+                    root = rotateRight(root, gpNewNode);
+                    temp = parentNewNode.color;
+                    parentNewNode.color = gpNewNode.color;
+                    gpNewNode.color = (int)temp;
+                    newNode = parentNewNode;
+                }
+            } else {    // B
+
+                Node uncle = gpNewNode.left;
+
+                // 1
+                if ((uncle != null) && (uncle.color == 1)) {
+                    gpNewNode.color = 1;
+                    parentNewNode.color = 0;
+                    uncle.color = 0;
+                    newNode = gpNewNode;
+                } else {
+                    // 2
+                    if (newNode == parentNewNode.left) {
+                        root = rotateRight(root, parentNewNode);
+                        newNode = parentNewNode;
+                        parentNewNode = newNode.parent;
+                    }
+
+                    // 3
+                    root = rotateLeft(root, gpNewNode);
+                    temp = parentNewNode.color;
+                    parentNewNode.color = gpNewNode.color;
+                    gpNewNode.color = (int)temp;
+                    newNode = parentNewNode;
+                }
+            }
+        }
+
+        root.color = 0;
+        return root;
+    }
+
+
+    /**
+     * Performs left rotation
+     * @param root the root node of the tree
+     * @param node the node to which the rotation is referred
+     * @return the root node after the left rotation is completed
+     */
+    static Node rotateLeft(Node root, Node node) {
+        Node nodeRight = node.right;
+
+        node.right = nodeRight.left;
+
+        if (node.right != null) {
+            node.right.parent = node;
+        }
+
+        nodeRight.parent = node.parent;
+
+        if (node.parent == null) {
+            root = nodeRight;
+        } else if (node == node.parent.left) {
+            node.parent.left = nodeRight;
+        } else {
+            node.parent.right = nodeRight;
+        }
+
+        nodeRight.left = node;
+        node.parent = nodeRight;
+
+        return root;
+    }
+
+
+    /**
+     * Performs right rotation
+     * @param root the root node of the tree
+     * @param node the node to which the rotation is referred
+     * @return the root node after the right rotation is completed
+     */
+    static Node rotateRight(Node root, Node node) {
+        Node nodeLeft = node.left;
+
+        node.left = nodeLeft.right;
+
+        if (node.left != null) {
+            node.left.parent = node;
+        }
+
+        nodeLeft.parent = node.parent;
+
+        if (node.parent == null) {
+            root = nodeLeft;
+        } else if (node == node.parent.left) {
+            node.parent.left = nodeLeft;
+        } else {
+            node.parent.right = nodeLeft;
+        }
+
+        nodeLeft.right = node;
+        node.parent = nodeLeft;
+        return root;
     }
 
 
@@ -44,7 +199,7 @@ public class RBTree {
         if(root != null){
             // I could use a string builder but probably this is not gonna be used during time calculation
             // and, given that, i don't wanna decrease code's readability
-            System.out.print(root.key + ":" + root.value + ":" + root.height + " " + root.color + " ");
+            System.out.print(root.key + ":" + root.value + ":" + ((root.color == 1) ? "red" : "black") + " ");
             show(root.left);
             show(root.right);
         }else{

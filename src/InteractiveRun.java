@@ -12,12 +12,13 @@ public class InteractiveRun {
             bstMenu(scan);
         }else if(choice.equals("avl")){
             avlMenu(scan);
-        }else if(choice.equals("bst")){
-            System.out.println("Not yet implemented");
+        }else if(choice.equals("rbt")){
+            rbtMenu(scan);
         }else{
             System.out.println("Invalid input");
         }
     }
+
 
     /**
      * Menu for the BINARY SEARCH TREE
@@ -109,6 +110,49 @@ public class InteractiveRun {
                 System.out.println("Unknown command");
             }
         }
+    }
 
+    /**
+     * Menu for the RED BLACK TREE
+     * Implemented functions are:
+     *      • insert [key] [value]
+     *      • find [key]
+     *      • show
+     *      • clear
+     *      • exit
+     *
+     * @param scan the scanner to take input from cli
+     */
+    private static void rbtMenu(Scanner scan) {
+        int key;
+        String value;
+        Node root = null;
+        while(true) {
+            System.out.println("Type input");
+            String inputLine = scan.nextLine();
+            String els[] = inputLine.split("\\s+");
+
+            if(els[0].equals("insert")){
+                key = Integer.parseInt(els[1]);
+                value = els[2];
+                root = RBTree.insert(root, new Node(key, value, "1"));
+            }else if(els[0].equals("find")){
+                if (root != null) {
+                    key = Integer.parseInt(els[1]);
+                    System.out.println(RBTree.find(root, key).value);
+                } else {
+                    System.out.println("Tree is empty!");
+                }
+            }else if(els[0].equals("show")) {
+                RBTree.show(root);
+                System.out.println();
+            }else if(els[0].equals("clear")) {
+                root = null;
+            }else if(els[0].equals("exit")) {
+                break;
+            }else {
+                System.out.println("Unknown command");
+            }
+        }
     }
 }

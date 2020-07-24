@@ -64,6 +64,7 @@ public class AVLTree {
     }
 
 
+
     /**
      * Visiting the AVL in prefix notation printing each node as key:value:height
      * @param root the root node of the AVL
