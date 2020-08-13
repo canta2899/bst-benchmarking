@@ -1,4 +1,40 @@
-public class BSTree {
+import java.util.Scanner;
+
+public class BSCheck {
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int key;
+        String value;
+        RBNode root = null;
+        while(true) {
+            System.out.println("Type input");
+            String inputLine = scan.nextLine();
+            String els[] = inputLine.split("\\s+");
+
+            if(els[0].equals("insert")){
+                key = Integer.parseInt(els[1]);
+                value = els[2];
+                root = RBTree.insert(root, new RBNode(key, value));
+            }else if(els[0].equals("find")){
+                if (root != null) {
+                    key = Integer.parseInt(els[1]);
+                    System.out.println(RBTree.find(root, key).value);
+                } else {
+                    System.out.println("Tree is empty!");
+                }
+            }else if(els[0].equals("show")) {
+                RBTree.show(root);
+                System.out.println();
+            }else if(els[0].equals("clear")) {
+                root = null;
+            }else if(els[0].equals("exit")) {
+                break;
+            }else {
+                System.out.println("Unknown command");
+            }
+        }
+    }
 
     /**
      * Insertion of a newNode in the BST maintaining BST properties
