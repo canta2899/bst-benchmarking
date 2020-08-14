@@ -1,4 +1,4 @@
-class BSNode {
+class BSNode{
     Integer key;
     String value;
     BSNode left;

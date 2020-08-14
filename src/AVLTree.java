@@ -47,20 +47,30 @@ public class AVLTree {
     }
 
 
-    /**
-     * Finding the node of the given key in the AVL
-     * @param root the root node of the AVL
-     * @param key the key of the node to be searched. REQUIRED as a key of an existent node
-     * @return the node of the given key
-     */
+//    /**
+//     * Finding the node of the given key in the AVL
+//     * @param root the root node of the AVL
+//     * @param key the key of the node to be searched. REQUIRED as a key of an existent node
+//     * @return the node of the given key
+//     */
+//    static AVLNode find(AVLNode root, int key){
+//        if(root == null || root.key == key){
+//            return root;
+//        }else if(root.key < key){
+//            return find(root.right, key);
+//        }else{
+//            return find(root.left, key);
+//        }
+//    }
+
     static AVLNode find(AVLNode root, int key){
-        if(root == null || root.key == key){
-            return root;
-        }else if(root.key < key){
-            return find(root.right, key);
-        }else{
-            return find(root.left, key);
+        while(root != null && root.key != key){
+            if(key < root.key)
+                root = root.left;
+            else
+                root = root.right;
         }
+        return root;
     }
 
 

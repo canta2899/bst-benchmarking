@@ -1,4 +1,4 @@
-public class AVLNode {
+public class AVLNode{
     Integer key;
     String value;
     int height;

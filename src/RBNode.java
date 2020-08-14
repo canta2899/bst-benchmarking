@@ -1,4 +1,4 @@
-public class RBNode {
+public class RBNode{
     Integer key;
     String value;
     RBNode left;
