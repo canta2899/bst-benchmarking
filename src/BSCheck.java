@@ -1,12 +1,14 @@
 import java.util.Scanner;
 
+/**
+ * Debugging and testing BS trees with iterative cli interface
+ */
 public class BSCheck {
-
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         int key;
         String value;
-        RBNode root = null;
+        BSNode root = null;
         while(true) {
             System.out.println("Type input");
             String inputLine = scan.nextLine();
@@ -15,16 +17,16 @@ public class BSCheck {
             if(els[0].equals("insert")){
                 key = Integer.parseInt(els[1]);
                 value = els[2];
-                root = RBTree.insert(root, new RBNode(key, value));
+                root = insert(root, new BSNode(key, value));
             }else if(els[0].equals("find")){
                 if (root != null) {
                     key = Integer.parseInt(els[1]);
-                    System.out.println(RBTree.find(root, key).value);
+                    System.out.println(find(root, key).value);
                 } else {
                     System.out.println("Tree is empty!");
                 }
             }else if(els[0].equals("show")) {
-                RBTree.show(root);
+                show(root);
                 System.out.println();
             }else if(els[0].equals("clear")) {
                 root = null;
@@ -35,6 +37,7 @@ public class BSCheck {
             }
         }
     }
+
 
     /**
      * Insertion of a newNode in the BST maintaining BST properties

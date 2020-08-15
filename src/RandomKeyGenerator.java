@@ -1,19 +1,27 @@
 import org.apache.commons.math3.random.MersenneTwister;
 import java.security.SecureRandom;
 
-public class RandomKeyGenerator {
-
-
+/**
+ * Allows to generate a certain amount of random keys
+ */
+class RandomKeyGenerator {
 
     private int currentSize;
     private int[] keys;
 
+    /**
+     * Constructor for a Random Key Generator
+     * @param n the number of keys that will be generated
+     */
     RandomKeyGenerator(int n){
         this.currentSize = n;
         this.keys = new int[n];
     }
 
-
+    /**
+     * Populates the vector of random keys according to the currentSize value.
+     * Keys are generated randomly with MersenneTwister algorithm
+     */
     void generateRandomKey() {
         MersenneTwister mt = new MersenneTwister(generateSeed());
         int value;
@@ -23,6 +31,10 @@ public class RandomKeyGenerator {
         }
     }
 
+    /**
+     * Allows to obtain the keys generated
+     * @return the vector of keys
+     */
     int[] getKeys(){
         return keys;
     }
@@ -32,7 +44,7 @@ public class RandomKeyGenerator {
      * Generates a seed for MersenneTwister algorithm
      * @return the seed
      */
-    static int[] generateSeed() {
+    private static int[] generateSeed() {
         byte[] byteSeed = SecureRandom.getSeed(64);
         int[] intSeed = new int[byteSeed.length];
         for(int i = 0; i < 64; i++)

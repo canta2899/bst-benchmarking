@@ -1,5 +1,8 @@
 import java.util.Scanner;
 
+/**
+ * Debugging and testing AVL trees with iterative cli interface
+ */
 public class AVLCheck {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
@@ -36,6 +39,8 @@ public class AVLCheck {
             }
         }
     }
+
+
     /**
      * Insertion of a newNode in the AVL maintaining AVL properties (performs rotations)
      * @param root the root node of the AVL
@@ -98,7 +103,6 @@ public class AVLCheck {
             return find(root.left, key);
         }
     }
-
 
 
     /**

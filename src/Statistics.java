@@ -1,28 +1,52 @@
 import java.util.Vector;
 
+/**
+ * The Statistics object allow to store time values for various execution and then compute statistics such as
+ * mean or standard deviation
+ */
 class Statistics {
     private Vector<Long> bsTimes;
     private Vector<Long> avlTimes;
     private Vector<Long> rbTimes;
 
+    /**
+     * Constructor for Statistic Object
+     */
     Statistics(){
         this.bsTimes = new Vector<>();
         this.avlTimes = new Vector<>();
         this.rbTimes = new Vector<>();
     }
 
+    /**
+     * Inserts a time value in binary search execution times Vector
+     * @param time the time value that will be added
+     */
     void insertBsTime(long time){
         bsTimes.add(time);
     }
 
+    /**
+     * Inserts a time value in avl execution times Vector
+     * @param time the time value that will be added
+     */
     void insertAvlTime(long time){
         avlTimes.add(time);
     }
 
+    /**
+     * Inserts a time value in red black execution times Vector
+     * @param time the time value that will be added
+     */
     void insertRbTime(long time){
         rbTimes.add(time);
     }
 
+
+    /**
+     * Computes the mean for the binary search execution times Vector
+     * @return the mean
+     */
     long computeBsMean(){
         long sum = 0;
         for(Long value:bsTimes){
@@ -31,6 +55,11 @@ class Statistics {
         return sum / (bsTimes.size());
     }
 
+
+    /**
+     * Computes the mean for the avl execution times Vector
+     * @return the mean
+     */
     long computeAvlMean(){
         long sum = 0;
         for(Long value:avlTimes){
@@ -39,6 +68,11 @@ class Statistics {
         return sum / (avlTimes.size());
     }
 
+
+    /**
+     * Computes the mean for the red black execution times Vector
+     * @return the mean
+     */
     long computeRbMean(){
         long sum = 0;
         for(Long value:rbTimes){
@@ -47,6 +81,11 @@ class Statistics {
         return sum / (rbTimes.size());
     }
 
+
+    /**
+     * Computes the std for the binary search execution times Vector
+     * @return the std
+     */
     double computeBsStd(){
         long sum1 = 0;
         long mean;
@@ -59,6 +98,11 @@ class Statistics {
         return Math.sqrt(sum1 - mean*mean);
     }
 
+
+    /**
+     * Computes the std for the avl execution times Vector
+     * @return the std
+     */
     double computeAvlStd(){
         long sum1 = 0;
         long mean;
@@ -71,6 +115,11 @@ class Statistics {
         return Math.sqrt(sum1 - mean*mean);
     }
 
+
+    /**
+     * Computes the std for the red black execution times Vector
+     * @return the std
+     */
     double computeRbStd(){
         long sum1 = 0;
         long mean;

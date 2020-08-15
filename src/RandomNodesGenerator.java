@@ -1,6 +1,12 @@
 import org.apache.commons.math3.random.MersenneTwister;
 import java.security.SecureRandom;
 
+
+/**
+ * USELESS - WILL BE DELETED SOON
+ */
+
+@Deprecated
 public class RandomNodesGenerator {
 
     private int currentSize;

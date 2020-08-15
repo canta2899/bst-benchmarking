@@ -4,22 +4,35 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Main class, once executed produces a text file with execution times for analytic purposes
+ */
+
 public class Time {
-    private static BSNode bsTree;
-    private static AVLNode avlTree;
-    private static RBNode rbTree;
+
+    // Execution thread
 
     public static void main(String[] args) {
+        // computing machine's resolution
+        long maxError = Resolution.getResolution()*101;
+
+        // variables
         int n;
+        int[] keys;
         long bsTime, avlTime, rbTime;
         double bsStd, avlStd, rbStd;
-        long maxError = Resolution.getResolution()*101;
-        int[] keys;
+
+        // objects for computing statistics
         Statistics statistics;
-        DecimalFormat df = new DecimalFormat("0.000");
         RandomKeyGenerator rng;
+        DecimalFormat df = new DecimalFormat("0.000");
+
+        // text file
         String fileName = "tempi_di_esecuzione.txt";
         StringBuilder infoLine = new StringBuilder();
+
+
+        // Building text file
 
         File time = new File(fileName);
         try {
@@ -31,6 +44,9 @@ public class Time {
         } catch (IOException e) {
             System.out.println("An error accoured during file creation");
         }
+
+
+        // Execution
 
         try (FileWriter writer = new FileWriter(fileName)){
             // TODO JVM WARM UP
@@ -94,6 +110,13 @@ public class Time {
     }
 
 
+    /**
+     * Gets the amortized execution time for a Binary Search Tree
+     * @param n the number of iterations
+     * @param keys the keys that will be searched (or inserted) in the tree
+     * @param maxError value that time can't exceed in order to respect 1% relative error
+     * @return the time value computed
+     */
     public static long getExTimeBSTree(int n, int[] keys, long maxError) {
         long start, end;
         int count = 0;
@@ -114,7 +137,13 @@ public class Time {
     }
 
 
-
+    /**
+     * Gets the amortized execution time for a AVL Tree
+     * @param n the number of iterations
+     * @param keys the keys that will be searched (or inserted) in the tree
+     * @param maxError value that time can't exceed in order to respect 1% relative error
+     * @return the time value computed
+     */
     public static long getExTimeAVLTree(int n, int[] keys, long maxError) {
         long start, end;
         int count = 0;
@@ -134,6 +163,13 @@ public class Time {
     }
 
 
+    /**
+     * Gets the amortized execution time for a Red Black Tree Tree
+     * @param n the number of iterations
+     * @param keys the keys that will be searched (or inserted) in the tree
+     * @param maxError value that time can't exceed in order to respect 1% relative error
+     * @return the time value computed
+     */
     public static long getExTimeRBTree(int n, int[] keys, long maxError) {
         long start, end;
         int count = 0;
@@ -152,4 +188,4 @@ public class Time {
 
         return ((end - start) / count) / n;
     }
-}
+} // class Time

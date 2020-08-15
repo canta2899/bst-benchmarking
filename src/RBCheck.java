@@ -1,5 +1,8 @@
 import java.util.Scanner;
 
+/**
+ * Debugging and testing RB trees with iterative cli interface
+ */
 public class RBCheck {
     public static void main(String[] args) {
         int key;
