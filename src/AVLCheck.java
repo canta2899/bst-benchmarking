@@ -14,23 +14,23 @@ public class AVLCheck {
             if(els[0].equals("insert")){
                 key = Integer.parseInt(els[1]);
                 value = els[2];
-                root = AVLTree.insert(root, new AVLNode(key, value, 1));
+                root = insert(root, new AVLNode(key, value, 1));
             }else if(els[0].equals("find")){
                 if (root != null) {
                     key = Integer.parseInt(els[1]);
-                    System.out.println(AVLTree.find(root, key).value);
+                    System.out.println(find(root, key).value);
                 } else {
                     System.out.println("Tree is empty!");
                 }
             }else if(els[0].equals("show")) {
-                AVLTree.show(root);
+                show(root);
                 System.out.println();
             }else if(els[0].equals("clear")) {
                 root = null;
             }else if(els[0].equals("exit")) {
                 break;
             }else if(els[0].equals("height")){
-                System.out.println(AVLTree.computeHeight(root));
+                System.out.println(computeHeight(root));
             }else {
                 System.out.println("Unknown command");
             }

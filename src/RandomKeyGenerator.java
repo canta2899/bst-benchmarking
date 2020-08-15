@@ -1,42 +1,30 @@
 import org.apache.commons.math3.random.MersenneTwister;
 import java.security.SecureRandom;
 
-public class RandomNodesGenerator {
+public class RandomKeyGenerator {
+
+
 
     private int currentSize;
-    private BSNode[] bsArray;
-    private AVLNode[] avlArray;
-    private RBNode[] rbArray;
+    private int[] keys;
 
-    RandomNodesGenerator(int n){
+    RandomKeyGenerator(int n){
         this.currentSize = n;
-        this.bsArray = new BSNode[n];
-        this.avlArray = new AVLNode[n];
-        this.rbArray = new RBNode[n];
+        this.keys = new int[n];
     }
 
 
-    void generateRandomNodes() {
+    void generateRandomKey() {
         MersenneTwister mt = new MersenneTwister(generateSeed());
         int value;
         for(int i = 0; i < currentSize; i++){
             value = mt.nextInt();
-            bsArray[i] = new BSNode(value, "value");
-            avlArray[i] = new AVLNode(value, "value",1);
-            rbArray[i] = new RBNode(value, "value");
+            keys[i] = value;
         }
     }
 
-    BSNode[] getBsArray(){
-        return bsArray;
-    }
-
-    AVLNode[] getAvlArray(){
-        return avlArray;
-    }
-
-    RBNode[] getRbArray(){
-        return rbArray;
+    int[] getKeys(){
+        return keys;
     }
 
 
@@ -51,4 +39,5 @@ public class RandomNodesGenerator {
             intSeed[i] = byteSeed[i];
         return intSeed;
     }
+
 }
