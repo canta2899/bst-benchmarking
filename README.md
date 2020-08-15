@@ -1,18 +1,16 @@
 # Secondo Progetto del corso "Algoritmi e Strutture Dati"
 
-Le classi attualmente presenti sono:
+Il progetto prevede l'analisi dei tempi di esecuzione di operazioni di ricerca e inserimento in: 
 
-• **BSTree** (implementazione di operazioni di inserimento e ricerca di un Binary Search Tree)
+* Binay Search Trees
+* AVL Trees
+* Red Black Trees
 
-• **AVLTree** (implementazione di operazioni di inserimento e ricerca di un AVL Tree)
+Il programma, lanciato dalla classe Time, prevede diverse esecuzioni con input size crescente (sulla base di una apposita funzione esponenziale) dalle quali vengono ricavati tempo medio e standard deviation. 
 
-• **Node** (overloading di costruttori per i 3 tipi di albero, da valutare se creare 3 classi diverse in base all'efficienza)
+Per ogni albero, in particolare, sono stati implementate le operazioni di inserimento e ricerca e la relativa classe di tipo "Nodo".
 
-• **RBTree** (implementazione di operazioni di inserimento e ricerca di un Red Black Tree)
+La generazione di chiavi casuali durante il calcolo dei tempi è delegata alla classe RandomKeyGenerator, che si appoggia a sua volta all'algoritmo Mersenne Twister.
 
-• **InteractiveRun** (classe per il Test del funzionamento degli alberi. Lanciandola è possibile scegliere il tipo di albero e poi inserire e ricercare)
-
-• **RandomTest** (classe per la generazione di numeri casuali presa dal codice del primo progetto)
-
-• **Resolution** (classe per il calcolo della risoluzione della macchina. Presa anch'essa dal codice del primo progetto)
+Il calcolo dei tempi, invece, viene effettuato mantenendo un errore relativo inferiore all'1% sulla base della risoluzione preventivamente calcolata. In particolare, lo stopwatch impiegato per l'ottenimento di un valore temporale in nanosecondi sufficientemente preciso è quello implementato dalla classe System.nanoTime di Java.
 
