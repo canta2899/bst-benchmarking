@@ -1,5 +1,5 @@
 public class AVLNode{
-    Integer key;
+    int key;
     String value;
     int height;
     AVLNode left;
@@ -11,7 +11,7 @@ public class AVLNode{
      * @param value the value associated to the key. REQUIRED as a String object
      * @param height the height of the node in the tree
      */
-    AVLNode(Integer key, String value, int height){
+    AVLNode(int key, String value, int height){
         this.key = key;
         this.value = value;
         this.left = null;

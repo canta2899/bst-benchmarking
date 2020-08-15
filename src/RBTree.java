@@ -197,8 +197,6 @@ public class RBTree {
      */
     static void show(RBNode root){
         if(root != null){
-            // I could use a string builder but probably this is not gonna be used during time calculation
-            // and, given that, i don't wanna decrease code's readability
             System.out.print(root.key + ":" + root.value + ":" + ((root.color == 1) ? "red" : "black") + " ");
             show(root.left);
             show(root.right);

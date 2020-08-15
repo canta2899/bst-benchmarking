@@ -23,8 +23,6 @@ public class BSTree {
      * @param root the root node of the BST
      */
     static void show(BSNode root){
-        // I could use a string builder but probably this is not gonna be used during time calculation
-        // and, given that, i don't wanna decrease code's readability
         if(root != null){
             System.out.print(root.key+":"+root.value+" ");
             show(root.left);

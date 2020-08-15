@@ -13,52 +13,66 @@ public class Time {
     // Execution thread
 
     public static void main(String[] args) {
-        // computing machine's resolution
+        // computing machine's resolution and deriving maxError to respect 1% error during execution
         long maxError = Resolution.getResolution()*101;
 
         // variables
-        int n;
+        int n, count;
         int[] keys;
         long bsTime, avlTime, rbTime;
         double bsStd, avlStd, rbStd;
 
-        // objects for computing statistics
+        // objects for statistical calculations (mean and std)
         Statistics statistics;
         RandomKeyGenerator rng;
         DecimalFormat df = new DecimalFormat("0.000");
 
-        // text file
+        // tools for writing values on a txt file
         String fileName = "tempi_di_esecuzione.txt";
         StringBuilder infoLine = new StringBuilder();
 
 
         // Building text file
-
         File time = new File(fileName);
-        try {
+        try{
             if (time.createNewFile()) {
                 System.out.println("File created");
             } else {
                 System.out.println("File already exists");
             }
         } catch (IOException e) {
-            System.out.println("An error accoured during file creation");
+            System.out.println("An error happened during file creation");
+            System.exit(1);
         }
 
 
         // Execution
 
         try (FileWriter writer = new FileWriter(fileName)){
-            // TODO JVM WARM UP
 
-            // Executing time calculation for "iter" times, every time with a higher n according to the exp function
+            // JVM WARMUP
+            count = 0;
+            for(int length = 0; length < 60; length+=10) {
+                int warmUpSize = (int)(Math.pow(1.25, length)*10);
+                rng = new RandomKeyGenerator(warmUpSize);
+                rng.generateRandomKey();
+                keys = rng.getKeys();
+                for (int iter_length = 0; iter_length < 50; iter_length++) {
+                    System.out.print("\rWarming up JVM... " + ++count*100/(6*50*4) + "%");
+                    getExTimeBSTree(warmUpSize, keys, maxError);
+                    getExTimeAVLTree(warmUpSize, keys, maxError);
+                    getExTimeRBTree(warmUpSize, keys, maxError);
+                }
+            }
+
+            // Time calculation starts, for every "iter" a new value for n is computed according to the exp function
             for(int iter = 0; iter < 100; iter++){
 
                 System.out.println("Starting calculation for a new line");
 
+                // Computing n according to the following exponential function
+                n = (int)(Math.pow(1.116, iter)*100);  // TODO exp function is between 100 and 5000000. Is that okay?
 
-                // n = (int)(Math.pow(1.116, iter)*100);  // TODO is exp function alright?
-                n = (iter + 1) * 5; // just for debugging
 
                 // Obtaining a vector of random keys that will be used in trees' algorithms
                 rng = new RandomKeyGenerator(n);
@@ -66,7 +80,7 @@ public class Time {
                 keys = rng.getKeys();
 
 
-                // building statistics object to compute mean and std
+                // Building statistics object to compute mean and std
                 statistics = new Statistics();
 
 
@@ -92,7 +106,7 @@ public class Time {
                 rbStd = statistics.computeRbStd();
 
 
-                // Writing summing string on a text file using a string builder
+                // Building summing string and writing that on the txt file
                 System.out.println("Writing line on txt file");
                 infoLine.append(n).append(" ")
                         .append(bsTime).append(" ").append(df.format(bsStd)).append(" ")
@@ -101,11 +115,12 @@ public class Time {
                         .append("\n");
                 writer.write(infoLine.toString());
 
-                // resetting the string builder
+                // Resetting the string builder
                 infoLine.setLength(0);
             }
         } catch (IOException e){
-            System.out.println("An I/O error happened, text file wasn't compiled successfully");
+            System.out.println("An I/O error happened, text file hasn't been completed successfully");
+            System.exit(1);
         }
     }
 

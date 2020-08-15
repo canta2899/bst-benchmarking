@@ -71,8 +71,6 @@ public class AVLTree {
      */
     static void show(AVLNode root){
         if(root != null){
-            // I could use a string builder but probably this is not gonna be used during time calculation
-            // and, given that, i don't wanna decrease code's readability
             System.out.print(root.key + ":" + root.value + ":" + root.height + " ");
             show(root.left);
             show(root.right);

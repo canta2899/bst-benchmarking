@@ -1,5 +1,5 @@
 public class RBNode{
-    Integer key;
+    int key;
     String value;
     RBNode left;
     RBNode right;
@@ -11,7 +11,7 @@ public class RBNode{
      * @param key the key of the node. REQUIRED as an Integer value and not NULL
      * @param value the value associated to the key. REQUIRED as a String object
      */
-    RBNode(Integer key, String value){
+    RBNode(int key, String value){
         this.key = key;
         this.value = value;
         this.left = null;
