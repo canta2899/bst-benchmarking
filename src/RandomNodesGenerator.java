@@ -4,6 +4,7 @@ import java.security.SecureRandom;
 
 /**
  * USELESS - WILL BE DELETED SOON
+ * This is the cause of the Stack Overflow Error experienced on AVL trees
  */
 
 @Deprecated

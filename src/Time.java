@@ -1,4 +1,3 @@
-import org.apache.poi.hssf.record.formula.functions.Rand;
 import java.text.DecimalFormat;
 import java.io.File;
 import java.io.FileWriter;
@@ -117,7 +116,10 @@ public class Time {
 
                 // Resetting the string builder
                 infoLine.setLength(0);
-            }
+            } // iterate for new n value
+
+            System.out.println("Time calculation finished correctly. Data can be found on file " + fileName);
+
         } catch (IOException e){
             System.out.println("An I/O error happened, text file hasn't been completed successfully");
             System.exit(1);
@@ -138,7 +140,7 @@ public class Time {
         BSNode root;
         start = System.nanoTime();
         do {
-            root = null;
+            root = null; // Garbage Collector clears the previous tree
             for(int i=0; i<n; i++){
                 if(BSTree.find(root, keys[i]) == null){
                     root = BSTree.insert(root, new BSNode(keys[i], "value"));
@@ -148,7 +150,7 @@ public class Time {
             count++;
         } while (end - start <= maxError);
 
-        return ((end - start) / count) / n;
+        return ((end - start) / count) / n; // division by n gives the amortized time
     }
 
 
@@ -165,7 +167,7 @@ public class Time {
         AVLNode root;
         start = System.nanoTime();
         do {
-            root = null;
+            root = null; // Garbage Collector clears the previous tree
             for(int i=0; i<n; i++){
                 if(AVLTree.find(root, keys[i]) == null){
                     root = AVLTree.insert(root, new AVLNode(keys[i], "value", 1));
@@ -174,7 +176,7 @@ public class Time {
             end = System.nanoTime();
             count++;
         } while (end - start <= maxError);
-        return ((end - start) / count) / n;
+        return ((end - start) / count) / n; // division by n gives the amortized time
     }
 
 
@@ -191,7 +193,7 @@ public class Time {
         RBNode root;
         start = System.nanoTime();
         do {
-            root = null;
+            root = null; // Garbage Collector clears the previous tree
             for(int i=0; i<n; i++){
                 if(RBTree.find(root, keys[i]) == null){
                     root = RBTree.insert(root, new RBNode(keys[i], "value"));
@@ -201,6 +203,6 @@ public class Time {
             count++;
         } while (end - start <= maxError);
 
-        return ((end - start) / count) / n;
+        return ((end - start) / count) / n;  // division by n gives the amortized time
     }
 } // class Time
