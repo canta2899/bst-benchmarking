@@ -4,6 +4,7 @@ import java.util.Vector;
  * The Statistics object allow to store time values for various execution and then compute statistics such as
  * mean or standard deviation
  */
+@Deprecated
 class Statistics {
     private Vector<Long> bsTimes;
     private Vector<Long> avlTimes;
