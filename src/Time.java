@@ -15,7 +15,7 @@ public class Time {
         long maxError = Resolution.getResolution() * 101;
 
         // variables
-        int n, count;
+        int n;
         int[] keys;
 
         RandomKeyGenerator rng;
@@ -29,17 +29,16 @@ public class Time {
             // Execution
 
             // JVM WARMUP
-            count = 0;
-            for (int length = 0; length < 60; length += 10) {
-                int warmUpSize = (int) (Math.pow(1.116, length) * 10);
-                rng = new RandomKeyGenerator(warmUpSize);
+            for (int length = 0; length < 50; length++) {
+                n = (int) (Math.pow(1.116, length) * 100);
+                rng = new RandomKeyGenerator(n);
                 rng.generateRandomKey();
                 keys = rng.getKeys();
                 for (int iter_length = 0; iter_length < 50; iter_length++) {
-                    System.out.print("\rWarming up JVM... " + ++count * 100 / (6 * 50 * 4) + "%");
-                    getExTimeBSTree(warmUpSize, keys, maxError);
-                    getExTimeAVLTree(warmUpSize, keys, maxError);
-                    getExTimeRBTree(warmUpSize, keys, maxError);
+                    System.out.print("\rWarming up JVM... ");
+                    getExTimeBSTree(n, keys, maxError);
+                    getExTimeAVLTree(n, keys, maxError);
+                    getExTimeRBTree(n, keys, maxError);
                 }
             }
 
