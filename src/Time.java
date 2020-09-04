@@ -43,7 +43,7 @@ public class Time {
             }
 
             // Time calculation starts, for every "iter" a new value for n is computed according to the exp function
-            for (int iter = 0; iter < 70; iter++) {
+            for (int iter = 0; iter < 100; iter++) {
 
                 System.out.println("Starting calculation for a new line " + iter);
 
@@ -60,7 +60,7 @@ public class Time {
 
 
                 // 50 times for every n and then computing the mean and std
-                for (int i = 0; i < 100; i++) {
+                for (int i = 0; i < 50; i++) {
                     Row row = sheet.getRow(i + 4);
                     Cell cell = row.createCell(0);
                     cell.setCellValue(getExTimeBSTree(n, keys, maxError));
