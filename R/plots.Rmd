@@ -1,0 +1,163 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(readxl)
+```
+
+```{r}
+# Creazione del csv dal xlsx
+ time <- write_csv(read_excel("../Time.xlsx", 101), "Time.csv") %>%
+  select(-matches("Best"))
+
+medians <- time %>%
+  select(Quick, Med, Heap, array_length) %>%
+  gather(key = "algorithm", value = "ex_time", -array_length) %>%
+  mutate(ex_time = ex_time / 10^9)
+
+quick <- time %>%
+  select(Quick_5:`Quick_n-5`, array_length) %>%
+  gather(key = "algorithm", value = "ex_time", -array_length) %>%
+  mutate(ex_time = ex_time / 10^9)
+
+med <- time %>%
+  select(Med_5:`Med_n-5`, array_length) %>%
+  gather(key = "algorithm", value = "ex_time", -array_length) %>%
+  mutate(ex_time = ex_time / 10^9)
+
+heap <- time %>%
+  select(Heap_5:`Heap_n-5`, array_length) %>%
+  gather(key = "algorithm", value = "ex_time", -array_length) %>%
+  mutate(ex_time = ex_time / 10^9)
+
+k5 <- time %>%
+  select(matches("_5"), array_length) %>%
+  gather(key = "algorithm", value = "ex_time", -array_length) %>%
+  mutate(ex_time = ex_time / 10^9)
+
+"k_n/2" <- time %>%
+  select(matches("n/2"), array_length) %>%
+  gather(key = "algorithm", value = "ex_time", -array_length) %>%
+  mutate(ex_time = ex_time / 10^9)
+
+k_log_n <- time %>%
+  select(matches("log_n"), array_length) %>%
+  gather(key = "algorithm", value = "ex_time", -array_length) %>%
+  mutate(ex_time = ex_time / 10^9)
+
+"k_n-5" <- time %>%
+  select(matches("n-5"), array_length) %>%
+  gather(key = "algorithm", value = "ex_time", -array_length) %>%
+  mutate(ex_time = ex_time / 10^9)
+```
+
+```{r}
+ggplot(data = medians, aes(x = array_length, y = ex_time, color = algorithm)) +
+  geom_point() +
+  geom_line() +
+  stat_smooth(method="gam") +
+  labs(y = "Execution time") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  theme(legend.position = c(.10, .90), legend.background = element_rect(fill = "transparent"), legend.title=element_blank())
+  ggsave("Grafici/Confronto_Mediane.png")
+```
+```{r}
+ggplot(data = medians, aes(x = array_length, y = ex_time, color = algorithm)) +
+  geom_point() +
+  geom_line() +
+  stat_smooth(method="gam") +
+  labs(y = "Execution time") +
+  scale_x_log10() +
+  scale_y_log10() +
+  theme(legend.position = c(.10, .90), legend.background = element_rect(fill = "transparent"), legend.title=element_blank())
+  ggsave("Grafici/Confronto_Mediane_log.png")
+```
+
+```{r}
+ggplot(data = quick, aes(x = array_length, y = ex_time, color = algorithm)) +
+  geom_point() +
+  geom_line() +
+  stat_smooth(method="gam") +
+  labs(y = "Execution time") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 20)) +
+  theme(legend.position = c(.10, .90), legend.background = element_rect(fill = "transparent"), legend.title=element_blank())
+ggsave("Grafici/QuickSelect.png")
+```
+
+```{r}
+ggplot(data = med, aes(x = array_length, y = ex_time, color = algorithm)) +
+  geom_point() +
+  geom_line() +
+  stat_smooth(method="gam") +
+  labs(y = "Execution time") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 20)) +
+  theme(legend.position = c(.10, .90), legend.background = element_rect(fill = "transparent"), legend.title=element_blank())
+ggsave("Grafici/MedianSelect.png")
+```
+
+```{r}
+ggplot(data = heap, aes(x = array_length, y = ex_time, color = algorithm)) +
+  geom_point() +
+  geom_line() +
+  stat_smooth(method="gam") +
+  labs(y = "Execution time") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 20)) +
+  theme(legend.position = c(.10, .90), legend.background = element_rect(fill = "transparent"), legend.title=element_blank())
+ggsave("Grafici/HeapSelect.png")
+```
+
+```{r}
+ggplot(data = k5, aes(x = array_length, y = ex_time, color = algorithm)) +
+  geom_point() +
+  geom_line() +
+  stat_smooth(method="gam") +
+  labs(y = "Execution time") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 20)) +
+  theme(legend.position = c(.10, .90), legend.background = element_rect(fill = "transparent"), legend.title=element_blank())
+ggsave("Grafici/Confronto_k_5.png")
+```
+
+```{r}
+ggplot(data = `k_n/2`, aes(x = array_length, y = ex_time, color = algorithm)) +
+  geom_point() +
+  geom_line() +
+  stat_smooth(method="gam") +
+  labs(y = "Execution time") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 20)) +
+  theme(legend.position = c(.10, .90), legend.background = element_rect(fill = "transparent"), legend.title=element_blank())
+ggsave("Grafici/Confronto_k_n_mezzi.png")
+```
+
+```{r}
+ggplot(data = k_log_n, aes(x = array_length, y = ex_time, color = algorithm)) +
+  geom_point() +
+  geom_line() +
+  stat_smooth(method="gam") +
+  labs(y = "Execution time") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 20)) +
+  theme(legend.position = c(.10, .90), legend.background = element_rect(fill = "transparent"), legend.title=element_blank())
+ggsave("Grafici/Confronto_k_log_n.png")
+```
+
+```{r}
+ggplot(data = `k_n-5`, aes(x = array_length, y = ex_time, color = algorithm)) +
+  geom_point() +
+  geom_line() +
+  stat_smooth(method="gam") +
+  labs(y = "Execution time") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 20)) +
+  theme(legend.position = c(.10, .90), legend.background = element_rect(fill = "transparent"), legend.title=element_blank())
+ggsave("Grafici/Confronto_k_n_meno_5.png")
+```
