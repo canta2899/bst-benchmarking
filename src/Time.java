@@ -93,7 +93,6 @@ public class Time {
 
     /**
      * Gets the amortized execution time for a Binary Search Tree
-     *
      * @param n        the number of iterations
      * @param keys     the keys that will be searched (or inserted) in the tree
      * @param maxError value that time can't exceed in order to respect 1% relative error

@@ -1,8 +1,7 @@
 import java.util.Vector;
 
 /**
- * The Statistics object allow to store time values for various execution and then compute statistics such as
- * mean or standard deviation
+ * NOT USED ANYMORE SINCE EXCEL INTEGRATION. WAS USED TO COMPUTE STATISTICS
  */
 @Deprecated
 class Statistics {
