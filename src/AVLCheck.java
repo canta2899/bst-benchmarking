@@ -48,75 +48,44 @@ public class AVLCheck {
      * @return the root node of the AVL after the insertion
      */
     static AVLNode insert(AVLNode root, AVLNode newNode){
-        AVLNode curr = root;
-        AVLNode prev = null;
-
-        while(curr != null && curr.key != newNode.key) {
-            prev = curr;
-            if(newNode.key < curr.key){
-                curr = curr.left;
-            }else{
-                curr = curr.right;
-            }
-        }
-
-        if(prev == null){
-            root = newNode;
+        if(root == null){
+            return newNode;
+        }else if(root.key < newNode.key){
+            root.right = insert(root.right, newNode);
         }else{
-            newNode.parent = prev;
-            if(newNode.key < prev.key){
-                prev.left = newNode;
-            }else{
-                prev.right = newNode;
-            }
+            root.left = insert(root.left, newNode);
         }
 
-        AVLFix(root, newNode.parent, newNode.key);
+        root.height = Math.max(computeHeight(root.left), computeHeight(root.right))+1;
+        int bal = getBalanceFactor(root);
+
+        // Left right case
+        if (bal > 1 && newNode.key > root.left.key){
+            // Reassigning left child with left rotation and rotating right root
+            root.left = leftRotate(root.left);
+            return rightRotate(root);
+        }
+
+        // Right left case
+        if (bal < -1 && newNode.key < root.right.key){
+            // Reassigning right child with right rotation and rotating left root
+            root.right = rightRotate(root.right);
+            return leftRotate(root);
+        }
+
+        // Left left case
+        if (bal > 1 && newNode.key < root.left.key){
+            // Right rotation
+            return rightRotate(root);
+        }
+
+        if (bal < -1 && newNode.key > root.right.key){
+            // Left rotation
+            return leftRotate(root);
+        }
 
         return root;
     }
-
-    static void AVLFix(AVLNode root, AVLNode start, int key){
-        if(start != null){
-            start.height = 1 + Math.max(computeHeight(start.left), computeHeight(start.right));
-            int bal = getBalanceFactor(start);
-            AVLNode temp = start;
-            // Left right case
-            if (bal > 1 && start.left != null && key > start.left.key){
-                // Reassigning left child with left rotation and rotating right root
-                temp = leftRotate(root, start.left);
-                heightUpdate(temp);
-                temp = rightRotate(root, start);
-                heightUpdate(temp);
-            }
-
-            // Right left case
-            else if (bal < -1 && start.right != null && key < start.right.key){
-                // Reassigning right child with right rotation and rotating left root
-                temp = rightRotate(root, start.right);
-                heightUpdate(temp);
-
-                temp = leftRotate(root, start);
-                heightUpdate(temp);
-            }
-
-            // Left left case
-            else if (bal > 1 && start.left != null && key < start.left.key){
-                // Right rotation
-                temp = rightRotate(root, start);
-                heightUpdate(temp);
-            }
-
-            else if (bal < -1 && start.right != null && key > start.right.key) {
-                // Left rotation
-
-                temp = leftRotate(root, start);
-                heightUpdate(temp);
-            }
-            AVLFix(root, start.parent, key);
-        }
-    }
-
 
     /**
      * Finding the node of the given key in the AVL
@@ -156,28 +125,14 @@ public class AVLCheck {
      * @param node the node that will be rotated
      * @return node after rotation
      */
-    private static AVLNode leftRotate(AVLNode root, AVLNode node) {
-        if(node.parent == null){ // x is the root of the avl
-            root = node.right;
-        } else {
-            if(node.parent.left == node){
-                node.parent.left = node.right;
-            } else {
-                node.parent.right = node.right;
-            }
-        }
-
-        node.right.parent = node.parent;
-        node.parent = node.right;
-        node.right = node.right.left;
-
-        if(node.right != null){
-            node.right.parent = node;
-        }
-
-        node.parent.left = node;
-
-        return node.parent;
+    private static AVLNode leftRotate(AVLNode node) {
+        AVLNode r = node.right;
+        AVLNode l = r.left;
+        r.left = node;
+        node.right = l;
+        node.height = Math.max(computeHeight(node.left), computeHeight(node.right)) + 1;
+        r.height = Math.max(computeHeight(r.left), computeHeight(r.right)) + 1;
+        return r;
     }
 
 
@@ -186,40 +141,14 @@ public class AVLCheck {
      * @param node the node that will be rotated
      * @return node after rotation
      */
-    private static AVLNode rightRotate(AVLNode root, AVLNode node) {
-        if(node.parent == null){ // x is the root of the avl
-            root = node.left;
-            node.left.parent = null;
-        } else {
-            if(node.parent.left == node){
-                node.parent.left = node.left;
-            } else {
-                node.parent.right = node.left;
-            }
-        }
-
-        node.left.parent = node.parent;
-        node.parent = node.left;
-        node.left = node.left.right;
-
-        if(node.left != null){
-            node.left.parent = node;
-        }
-
-        node.parent.right = node;
-        return node.parent;
-    }
-
-
-    private static AVLNode heightUpdate(AVLNode node){
-        if(node.right != null){
-            node.right.height = 1 + Math.max(computeHeight(node.right.right), computeHeight(node.right.left));
-        }
-        if(node.left != null){
-            node.left.height = 1 + Math.max(computeHeight(node.left.right), computeHeight(node.left.left));
-        }
-        node.height = 1 + Math.max(computeHeight(node.right), computeHeight(node.left));
-        return node;
+    private static AVLNode rightRotate(AVLNode node) {
+        AVLNode l = node.left;
+        AVLNode r = l.right;
+        l.right = node;
+        node.left = r;
+        node.height = Math.max(computeHeight(node.left), computeHeight(node.right)) + 1;
+        l.height = Math.max(computeHeight(l.left), computeHeight(l.right)) + 1;
+        return l;
     }
 
 
@@ -231,7 +160,8 @@ public class AVLCheck {
     private static int getBalanceFactor(AVLNode node) {
         if(node == null)
             return 0;
-        return computeHeight(node.left) - computeHeight(node.right);
+        else
+            return computeHeight(node.left) - computeHeight(node.right);
 
     }
 
@@ -244,6 +174,7 @@ public class AVLCheck {
     static int computeHeight(AVLNode node) {
         if (node == null)
             return 0;
-        return node.height;
+        else
+            return node.height;
     }
 }
