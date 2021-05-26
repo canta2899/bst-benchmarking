@@ -7,13 +7,28 @@ public class BSTree {
      * @return the root node of the BST after the insertion
      */
     static BSNode insert(BSNode root, BSNode newNode){
-        if(root == null){
-            return newNode;
-        }else if(root.key < newNode.key){
-            root.right = insert(root.right, newNode);
-        }else{
-            root.left = insert(root.left, newNode);
+        BSNode curr = root;
+        BSNode prev = null;
+
+        while(curr != null && curr.key != newNode.key) {
+            prev = curr;
+            if(newNode.key < curr.key){
+                curr = curr.left;
+            }else{
+                curr = curr.right;
+            }
         }
+
+        if(prev == null){
+            root = newNode;
+        }else{
+            if(newNode.key < prev.key){
+                prev.left = newNode;
+            }else{
+                prev.right = newNode;
+            }
+        }
+
         return root;
     }
 

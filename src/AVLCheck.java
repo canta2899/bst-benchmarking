@@ -41,7 +41,6 @@ public class AVLCheck {
     }
 
 
-
     /**
      * Insertion of a newNode in the AVL maintaining AVL properties (performs rotations)
      * @param root the root node of the AVL
@@ -72,44 +71,39 @@ public class AVLCheck {
             }
         }
 
-        AVLFix(newNode.parent, newNode.key);
-        return root;
-    }
-
-    static void AVLFix(AVLNode node, int key){
-        if(node != null) {
-            node.height = Math.max(computeHeight(node.left), computeHeight(node.right)) + 1;
-            int bal = getBalanceFactor(node);
-
-            AVLNode temp = node;
-
+        AVLNode start = newNode.parent;
+        AVLNode temp;
+        while(start != null){
+            start.height = Math.max(computeHeight(start.left), computeHeight(start.right))+1;
+            int bal = getBalanceFactor(start);
+            temp = start;
             // Left right case
-            if (bal > 1 && node.left != null && key > node.left.key) {
+            if (bal > 1 && newNode.key > start.left.key){
                 // Reassigning left child with left rotation and rotating right root
-                temp = leftRotate(node.left);
-                temp = rightRotate(node);
+                start.left = leftRotate(start.left);
+                temp = rightRotate(start);
             }
 
             // Right left case
-            if (bal < -1 && node.right != null && key < node.right.key) {
+            if (bal < -1 && newNode.key < start.right.key){
                 // Reassigning right child with right rotation and rotating left root
-                temp = rightRotate(node.right);
-                temp = leftRotate(node);
+                start.right = rightRotate(start.right);
+                temp = leftRotate(start);
             }
 
             // Left left case
-            if (bal > 1 && node.left != null && key < node.left.key) {
+            if (bal > 1 && newNode.key < start.left.key){
                 // Right rotation
-                temp = rightRotate(node);
+                temp = rightRotate(start);
             }
 
-            if (bal < -1 && node.right != null && key > node.right.key) {
+            if (bal < -1 && newNode.key > start.right.key) {
                 // Left rotation
-                temp = leftRotate(node);
+                temp = leftRotate(start);
             }
-
-            AVLFix(temp.parent, key);
+            start = temp.parent;
         }
+        return root;
     }
 
 
