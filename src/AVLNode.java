@@ -4,6 +4,7 @@ public class AVLNode{
     int height;
     AVLNode left;
     AVLNode right;
+    AVLNode parent;
 
     /**
      * Node for the AVL tree
@@ -16,6 +17,7 @@ public class AVLNode{
         this.value = value;
         this.left = null;
         this.right = null;
+        this.parent = null;
         this.height = height;
     }
 }

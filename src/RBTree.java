@@ -2,7 +2,6 @@ public class RBTree {
     // 1 --> RED
     // 0 --> BLACK
 
-
     /**
      * Performs the RBTree insertion by inserting a new node and fixing RBTree properties
      * @param root the root node of the tree
@@ -23,14 +22,28 @@ public class RBTree {
      * @return the root node after the insertion
      */
     static RBNode regularInsertion(RBNode root, RBNode newNode) {
-        if(root == null){
-            return newNode;
-        }else if(root.key < newNode.key){
-            root.right = regularInsertion(root.right, newNode);
-            root.right.parent = root;
+
+        RBNode curr = root;
+        RBNode prev = null;
+
+        while(curr != null && curr.key != newNode.key) {
+            prev = curr;
+            if(newNode.key < curr.key){
+                curr = curr.left;
+            }else{
+                curr = curr.right;
+            }
+        }
+
+        if(prev == null){
+            root = newNode;
         }else{
-            root.left = regularInsertion(root.left, newNode);
-            root.left.parent = root;
+            newNode.parent = prev;
+            if(newNode.key < prev.key){
+                prev.left = newNode;
+            }else{
+                prev.right = newNode;
+            }
         }
 
         return root;

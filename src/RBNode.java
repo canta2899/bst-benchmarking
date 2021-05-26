@@ -1,9 +1,10 @@
 public class RBNode{
+
     int key;
     String value;
     RBNode left;
     RBNode right;
-    RBNode parent; // for red black trees
+    RBNode parent;
     int color; // for red black trees
 
     /**
