@@ -9,13 +9,29 @@ public class AVLTree {
      * @return the root node of the AVL after the insertion
      */
     static AVLNode insert(AVLNode root, AVLNode newNode){
-        if(root == null){
-            return newNode;
-        }else if(root.key < newNode.key){
-            root.right = insert(root.right, newNode);
-        }else{
-            root.left = insert(root.left, newNode);
+        AVLNode curr = root;
+        AVLNode prev = null;
+
+        while(curr != null && curr.key != newNode.key) {
+            prev = curr;
+            if(newNode.key < curr.key){
+                curr = curr.left;
+            }else{
+                curr = curr.right;
+            }
         }
+
+        if(prev == null){
+            root = newNode;
+        }else{
+            if(newNode.key < prev.key){
+                prev.left = newNode;
+            }else{
+                prev.right = newNode;
+            }
+        }
+
+        // return root;
 
         root.height = Math.max(computeHeight(root.left), computeHeight(root.right))+1;
         int bal = getBalanceFactor(root);
