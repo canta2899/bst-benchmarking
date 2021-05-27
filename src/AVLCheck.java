@@ -167,22 +167,23 @@ exit
      * @return node after rotation
      */
     private static AVLNode leftRotate(AVLNode node) {
-        AVLNode r = node.right;
-        AVLNode l = r.left;
-        AVLNode temp;
-        r.left = node;
-        node.right = l;
-        if(r.left.parent != null) {
-            // temp = r.parent;
-            r.parent = r.left.parent;
-            r.left.parent = r; // was temp before
-        }else{
-            r.parent = null;
-            r.left.parent = r;
+        AVLNode P = node.parent;
+        AVLNode B = node.right;
+        node.right = B.left;
+        if(B.left != null)
+            B.left.parent = node;
+        B.left = node;
+        node.parent = B;
+        B.parent = P;
+        if(P != null){
+            if(P.right == node)
+                P.right = B;
+            else
+                P.left = B;
         }
         node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
-        r.height = Math.max(getHeight(r.left), getHeight(r.right)) + 1;
-        return r;
+        B.height = Math.max(getHeight(B.left), getHeight(B.right)) + 1;
+        return B;
     }
 
 
@@ -191,23 +192,24 @@ exit
      * @param node the node that will be rotated
      * @return node after rotation
      */
-    private static AVLNode rightRotate(AVLNode node) {
-        AVLNode l = node.left;
-        AVLNode r = l.right;
-        AVLNode temp;
-        l.right = node;
-        node.left = r;
-        if(l.right.parent != null) {
-            // temp = l.parent;
-            l.parent = l.right.parent;
-            l.right.parent = l;  // was temp before
-        }else{
-            l.parent = null;
-            l.right.parent = l;
+    private static AVLNode rightRotate(AVLNode A) {
+        AVLNode P = A.parent;
+        AVLNode B = A.left;
+        A.left = B.right;
+        if(B.right != null)
+            B.right.parent = A;
+        B.right = A;
+        A.parent = B;
+        B.parent = P;
+        if(P != null){
+            if(P.left == A)
+                P.left = B;
+            else
+                P.right = B;
         }
-        node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
-        l.height = Math.max(getHeight(l.left), getHeight(l.right)) + 1;
-        return l;
+        A.height = Math.max(getHeight(A.left), getHeight(A.right)) + 1;
+        B.height = Math.max(getHeight(B.left), getHeight(B.right)) + 1;
+        return B;
     }
 
 
