@@ -12,23 +12,12 @@ public class AVLTree {
         AVLNode curr = root;
         AVLNode prev = null;
 
-        while(curr != null && curr.key != newNode.key) {
-            prev = curr;
-            if(newNode.key < curr.key){
-                curr = curr.left;
-            }else{
-                curr = curr.right;
-            }
-        }
-
-        if(prev == null){
-            root = newNode;
+        if(root == null){
+            return newNode;
+        }else if(newNode.key < root.key){
+            root = insert(root.left, newNode);
         }else{
-            if(newNode.key < prev.key){
-                prev.left = newNode;
-            }else{
-                prev.right = newNode;
-            }
+            root = insert(root.right, newNode);
         }
 
         // return root;
