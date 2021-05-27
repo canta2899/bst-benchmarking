@@ -111,6 +111,22 @@ public class AVLCheck {
         return root;
     }
 
+/*
+insert 0 zero
+insert 17 seventeen
+insert 14 fourteen
+insert 8 eight
+insert 15 fifteen
+insert 13 thirteen
+insert 10 ten
+insert 6 six
+insert 2 two
+insert 5 five
+insert 12 twelve
+insert 7 seven
+show
+exit
+ */
 
     /**
      * Finding the node of the given key in the AVL
