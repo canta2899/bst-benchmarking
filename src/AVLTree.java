@@ -1,55 +1,76 @@
 public class AVLTree {
 
-    // https://www.codesdope.com/course/data-structures-avl-trees/ in place insertion ?
-
     /**
      * Insertion of a newNode in the AVL maintaining AVL properties (performs rotations)
      * @param root the root node of the AVL
      * @param newNode the new node to be inserted
      * @return the root node of the AVL after the insertion
      */
-    static AVLNode insert(AVLNode root, AVLNode newNode){
+    static AVLNode insert(AVLNode root, AVLNode newNode) {
         AVLNode curr = root;
         AVLNode prev = null;
 
-        if(root == null){
-            return newNode;
-        }else if(newNode.key < root.key){
-            root = insert(root.left, newNode);
-        }else{
-            root = insert(root.right, newNode);
+        while (curr != null) {
+            prev = curr;
+            if (newNode.key < curr.key) {
+                curr = curr.left;
+            } else {
+                curr = curr.right;
+            }
         }
 
-        // return root;
-
-        root.height = Math.max(computeHeight(root.left), computeHeight(root.right))+1;
-        int bal = getBalanceFactor(root);
-
-        // Left right case
-        if (bal > 1 && newNode.key > root.left.key){
-            // Reassigning left child with left rotation and rotating right root
-            root.left = leftRotate(root.left);
-            return rightRotate(root);
+        if (prev == null) {
+            root = newNode;
+        } else {
+            newNode.parent = prev;
+            if (newNode.key < prev.key) {
+                prev.left = newNode;
+            } else {
+                prev.right = newNode;
+            }
         }
 
-        // Right left case
-        if (bal < -1 && newNode.key < root.right.key){
-            // Reassigning right child with right rotation and rotating left root
-            root.right = rightRotate(root.right);
-            return leftRotate(root);
-        }
+        return AVLFix(root, newNode);
+    }
 
-        // Left left case
-        if (bal > 1 && newNode.key < root.left.key){
-            // Right rotation
-            return rightRotate(root);
+    static AVLNode AVLFix(AVLNode root, AVLNode newNode){
+        int key;
+        AVLNode prev = newNode.parent;
+        while (prev != null) {
+            prev.height = 1 + Math.max(getHeight(prev.left), getHeight(prev.right));
+            int bal = getBalanceFactor(prev);
+            key = prev.key;
+            if(Math.abs(bal) > 1) {
+                if (bal > 1) {
+                    if (newNode.key > prev.left.key) {
+                        // Reassigning left child with left rotation and rotating right root
+                        prev.left = leftRotate(prev.left);
+                        prev = rightRotate(prev);
+                    } else {   // Left left case
+                        prev = rightRotate(prev);
+                    }
+                } else if (bal < -1) {
+                    // Right left case
+                    if (newNode.key < prev.right.key) {
+                        // Reassigning right child with right rotation and rotating left root
+                        prev.right = rightRotate(prev.right);
+                        prev = leftRotate(prev);
+                    } else {
+                        // Left rotation
+                        prev = leftRotate(prev);
+                    }
+                }
+                // Updating parent of rotated subtree in case of rotations
+                if(prev.parent == null)
+                    root = prev;
+                else if(key > prev.parent.key)
+                    prev.parent.right = prev;
+                else
+                    prev.parent.left = prev;
+            }
+            // updating prev
+            prev = prev.parent;
         }
-
-        if (bal < -1 && newNode.key > root.right.key){
-            // Left rotation
-            return leftRotate(root);
-        }
-
         return root;
     }
 
@@ -60,15 +81,17 @@ public class AVLTree {
      * @return the node of the given key
      */
     static AVLNode find(AVLNode root, int key){
-        if(root == null || root.key == key){
-            return root;
-        }else if(root.key < key){
-            return find(root.right, key);
-        }else{
-            return find(root.left, key);
+        while(root != null){
+            if(root.key == key){
+                return root;
+            }else if(root.key < key){
+                root = root.right;
+            }else{
+                root = root.left;
+            }
         }
+        return null;
     }
-
 
 
     /**
@@ -91,13 +114,23 @@ public class AVLTree {
      * @param node the node that will be rotated
      * @return node after rotation
      */
-    private static AVLNode leftRotate(AVLNode node) {
+     private static AVLNode leftRotate(AVLNode node) {
+        AVLNode p = node.parent;
         AVLNode r = node.right;
-        AVLNode l = r.left;
+        node.right = r.left;
+        if(r.left != null)
+            r.left.parent = node;
         r.left = node;
-        node.right = l;
-        node.height = Math.max(computeHeight(node.left), computeHeight(node.right)) + 1;
-        r.height = Math.max(computeHeight(r.left), computeHeight(r.right)) + 1;
+        node.parent = r;
+        r.parent = p;
+        if(p != null){
+            if(p.right == node)
+                p.right = r;
+            else
+                p.left = r;
+        }
+        node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
+        r.height = Math.max(getHeight(r.left), getHeight(r.right)) + 1;
         return r;
     }
 
@@ -107,13 +140,23 @@ public class AVLTree {
      * @param node the node that will be rotated
      * @return node after rotation
      */
-    private static AVLNode rightRotate(AVLNode node) {
+     private static AVLNode rightRotate(AVLNode node) {
+        AVLNode p = node.parent;
         AVLNode l = node.left;
-        AVLNode r = l.right;
+        node.left = l.right;
+        if(l.right != null)
+            l.right.parent = node;
         l.right = node;
-        node.left = r;
-        node.height = Math.max(computeHeight(node.left), computeHeight(node.right)) + 1;
-        l.height = Math.max(computeHeight(l.left), computeHeight(l.right)) + 1;
+        node.parent = l;
+        l.parent = p;
+        if(p != null){
+            if(p.left == node)
+                p.left = l;
+            else
+                p.right = l;
+        }
+        node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
+        l.height = Math.max(getHeight(l.left), getHeight(l.right)) + 1;
         return l;
     }
 
@@ -127,7 +170,7 @@ public class AVLTree {
         if(node == null)
             return 0;
         else
-            return computeHeight(node.left) - computeHeight(node.right);
+            return getHeight(node.left) - getHeight(node.right);
 
     }
 
@@ -137,7 +180,7 @@ public class AVLTree {
      * @param node the node
      * @return 0 if the node is null, its height otherwise
      */
-    static int computeHeight(AVLNode node) {
+    static int getHeight(AVLNode node) {
         if (node == null)
             return 0;
         else

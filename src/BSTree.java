@@ -55,12 +55,15 @@ public class BSTree {
      * @return the node of the given key
      */
     static BSNode find(BSNode root, int key){
-        if(root == null || root.key == key){
-            return root;
-        }else if(root.key < key){
-            return find(root.right, key);
-        }else{
-            return find(root.left, key);
+        while(root != null){
+            if(root.key == key){
+                return root;
+            }else if(root.key < key){
+                root = root.right;
+            }else{
+                root = root.left;
+            }
         }
+        return null;
     }
 }

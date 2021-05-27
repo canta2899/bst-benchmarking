@@ -23,7 +23,7 @@ public class Time {
         try {
             // Init Excel Workbook
             String fileName = "Time.xlsx";
-            FileInputStream inputStream = new FileInputStream(new File(fileName));
+            FileInputStream inputStream = new FileInputStream(fileName);
             Workbook workbook = WorkbookFactory.create(inputStream);
 
             // Execution

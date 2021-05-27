@@ -3,25 +3,12 @@ public class RBTree {
     // 0 --> BLACK
 
     /**
-     * Performs the RBTree insertion by inserting a new node and fixing RBTree properties
-     * @param root the root node of the tree
-     * @param newNode the new node that will be inserted
-     * @return the root node after the insertion and the RBTree fix process
-     */
-    static RBNode insert(RBNode root, RBNode newNode){
-        root = regularInsertion(root, newNode);
-        root = RBFix(newNode, root);
-        return root;
-    }
-
-
-    /**
      * Performs a standard BSTree insertion
      * @param root the root node
      * @param newNode the new node that will be inserted
      * @return the root node after the insertion
      */
-    static RBNode regularInsertion(RBNode root, RBNode newNode) {
+    static RBNode insert(RBNode root, RBNode newNode) {
 
         RBNode curr = root;
         RBNode prev = null;
@@ -46,7 +33,7 @@ public class RBTree {
             }
         }
 
-        return root;
+        return RBFix(newNode, root);
     }
 
 
@@ -194,13 +181,16 @@ public class RBTree {
      * @return the node of the given key
      */
     static RBNode find(RBNode root, int key){
-        if(root == null || root.key == key){
-            return root;
-        }else if(root.key < key){
-            return find(root.right, key);
-        }else{
-            return find(root.left, key);
+        while(root != null){
+            if(root.key == key){
+                return root;
+            }else if(root.key < key){
+                root = root.right;
+            }else{
+                root = root.left;
+            }
         }
+        return null;
     }
 
 
