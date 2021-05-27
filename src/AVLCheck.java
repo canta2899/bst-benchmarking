@@ -33,7 +33,7 @@ public class AVLCheck {
             }else if(els[0].equals("exit")) {
                 break;
             }else if(els[0].equals("height")){
-                System.out.println(computeHeight(root));
+                System.out.println(getHeight(root));
             }else {
                 System.out.println("Unknown command");
             }
@@ -48,15 +48,82 @@ public class AVLCheck {
      * @return the root node of the AVL after the insertion
      */
     static AVLNode insert(AVLNode root, AVLNode newNode){
-        if(root == null){
-            return newNode;
-        }else if(root.key < newNode.key){
-            root.right = insert(root.right, newNode);
-        }else{
-            root.left = insert(root.left, newNode);
+        AVLNode curr = root;
+        AVLNode prev = null;
+
+        while(curr != null) {
+            prev = curr;
+            if(newNode.key < curr.key){
+                curr = curr.left;
+            }else{
+                curr = curr.right;
+            }
         }
 
-        root.height = Math.max(computeHeight(root.left), computeHeight(root.right))+1;
+        if(prev == null){
+            prev = newNode;
+        }else{
+            if(newNode.key < prev.key){
+                prev.left = newNode;
+            }else{
+                prev.right = newNode;
+            }
+        }
+
+        AVLNode ret = prev;
+
+        while (prev != null) {
+            prev.height = 1 + Math.max(getHeight(prev.left), getHeight(prev.right));
+//            int bal = getBalanceFactor(temp);
+//            if (bal > 1) {
+//                if (getHeight(temp.left.left) > getHeight(temp.left.right)) {
+//                    temp = rightRotate(temp);
+//                } else {
+//                    temp.left = leftRotate(temp.left);
+//                    temp = rightRotate(temp);
+//                }
+//            } else if (bal < -1) {
+//                if (getHeight(temp.right.left) > getHeight(temp.right.right)) {
+//                    temp = rightRotate(temp);
+//                } else {
+//                    temp.left = leftRotate(temp.left);
+//                    temp = rightRotate(temp);
+//                }
+//            }
+//            if(prev.parent == null){
+//                root = prev;
+//            }
+            ret = prev;
+            prev = prev.parent;
+        }
+        return root;
+    }
+
+    static AVLNode rebalance(AVLNode root, AVLNode temp) {
+        while (temp != null) {
+            temp.height = 1+Math.max(getHeight(temp.left), getHeight(temp.right));
+            int bal = getBalanceFactor(temp);
+            if (bal > 1) {
+                if (getHeight(temp.left.left) > getHeight(temp.left.right)) {
+                    temp = rightRotate(temp);
+                } else {
+                    temp.left = leftRotate(temp.left);
+                    temp = rightRotate(temp);
+                }
+            } else if (bal < -1) {
+                if (getHeight(temp.right.left) > getHeight(temp.right.right)) {
+                    temp = rightRotate(temp);
+                } else {
+                    temp.left = leftRotate(temp.left);
+                    temp = rightRotate(temp);
+                }
+            }
+            return rebalance(root, temp.parent);
+        }
+        return root;
+    }
+
+        /* root.height = Math.max(computeHeight(root.left), computeHeight(root.right))+1;
         int bal = getBalanceFactor(root);
 
         // Left right case
@@ -82,9 +149,25 @@ public class AVLCheck {
         if (bal < -1 && newNode.key > root.right.key){
             // Left rotation
             return leftRotate(root);
-        }
+        } */
 
-        return root;
+    static void rebalance(AVLNode node){
+        int bal = getBalanceFactor(node);
+        if(bal > 1){
+            if(getHeight(node.left.left) > getHeight(node.left.right)){
+                node = rightRotate(node);
+            }else{
+                node.left = leftRotate(node.left);
+                node = rightRotate(node);
+            }
+        }else if(bal < -1){
+            if(getHeight(node.right.left) > getHeight(node.right.right)){
+                node = rightRotate(node);
+            }else{
+                node.left = leftRotate(node.left);
+                node = rightRotate(node);
+            }
+        }
     }
 
     /**
@@ -130,8 +213,8 @@ public class AVLCheck {
         AVLNode l = r.left;
         r.left = node;
         node.right = l;
-        node.height = Math.max(computeHeight(node.left), computeHeight(node.right)) + 1;
-        r.height = Math.max(computeHeight(r.left), computeHeight(r.right)) + 1;
+        node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
+        r.height = Math.max(getHeight(r.left), getHeight(r.right)) + 1;
         return r;
     }
 
@@ -146,8 +229,8 @@ public class AVLCheck {
         AVLNode r = l.right;
         l.right = node;
         node.left = r;
-        node.height = Math.max(computeHeight(node.left), computeHeight(node.right)) + 1;
-        l.height = Math.max(computeHeight(l.left), computeHeight(l.right)) + 1;
+        node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
+        l.height = Math.max(getHeight(l.left), getHeight(l.right)) + 1;
         return l;
     }
 
@@ -161,7 +244,7 @@ public class AVLCheck {
         if(node == null)
             return 0;
         else
-            return computeHeight(node.left) - computeHeight(node.right);
+            return getHeight(node.left) - getHeight(node.right);
 
     }
 
@@ -171,7 +254,7 @@ public class AVLCheck {
      * @param node the node
      * @return 0 if the node is null, its height otherwise
      */
-    static int computeHeight(AVLNode node) {
+    static int getHeight(AVLNode node) {
         if (node == null)
             return 0;
         else
