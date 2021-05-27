@@ -1,5 +1,7 @@
 public class AVLTree {
 
+    // https://www.codesdope.com/course/data-structures-avl-trees/ in place insertion ?
+
     /**
      * Insertion of a newNode in the AVL maintaining AVL properties (performs rotations)
      * @param root the root node of the AVL
