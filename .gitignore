@@ -1,6 +1,6 @@
 relazione_template.docx
 .idea/
-out/
+out/*
 R/.RData
 R/.Rhistory
 R/plots.nb.html
