@@ -22,7 +22,7 @@ public class Time {
 
         try {
             // Init Excel Workbook
-            String fileName = "Time.xlsx";
+            String fileName = "../../../TimeIterative.xlsx";
             FileInputStream inputStream = new FileInputStream(fileName);
             Workbook workbook = WorkbookFactory.create(inputStream);
 
