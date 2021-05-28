@@ -123,12 +123,6 @@ public class AVLTree {
         r.left = node;
         node.parent = r;
         r.parent = p;
-        if(p != null){
-            if(p.right == node)
-                p.right = r;
-            else
-                p.left = r;
-        }
         node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
         r.height = Math.max(getHeight(r.left), getHeight(r.right)) + 1;
         return r;
@@ -149,12 +143,6 @@ public class AVLTree {
         l.right = node;
         node.parent = l;
         l.parent = p;
-        if(p != null){
-            if(p.left == node)
-                p.left = l;
-            else
-                p.right = l;
-        }
         node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
         l.height = Math.max(getHeight(l.left), getHeight(l.right)) + 1;
         return l;
