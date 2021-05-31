@@ -11,7 +11,7 @@ library(readxl)
 
 ```{r}
 # Creazione del csv dal xlsx
-time <- write_csv(read_excel("../Time.xlsx", 101), "Time.csv")
+time <- write_csv(read_excel("../TimeIterative.xlsx", 101), "Time.csv")
 
 time <- time %>%
   gather(key = "tree_type", value = "ex_time", -n_nodi) %>%

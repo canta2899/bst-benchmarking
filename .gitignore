@@ -1,0 +1,7 @@
+relazione_template.docx
+.idea/
+out/*
+R/.RData
+R/.Rhistory
+R/plots.nb.html
+R/Time.csv
