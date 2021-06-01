@@ -104,7 +104,7 @@ public class AVLTree {
      * @param node the node that will be rotated
      * @return node after rotation
      */
-     private static AVLNode leftRotate(AVLNode root, AVLNode node) {
+     static AVLNode leftRotate(AVLNode root, AVLNode node) {
         AVLNode p = node.parent;
         AVLNode r = node.right;
         node.right = r.left;
@@ -130,7 +130,7 @@ public class AVLTree {
      * @param node the node that will be rotated
      * @return node after rotation
      */
-     private static AVLNode rightRotate(AVLNode root, AVLNode node) {
+     static AVLNode rightRotate(AVLNode root, AVLNode node) {
         AVLNode p = node.parent;
         AVLNode l = node.left;
         node.left = l.right;
