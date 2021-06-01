@@ -117,31 +117,26 @@ public class RBTree {
      * @param node the node to which the rotation is referred
      * @return the root node after the left rotation is completed
      */
-    static RBNode rotateLeft(RBNode root, RBNode node) {
-        RBNode nodeRight = node.right;
+	static RBNode rotateLeft(RBNode root, RBNode node) {
+		RBNode p = node.parent;
+		RBNode r = node.right;
 
-        node.right = nodeRight.left;
-
-        if (node.right != null) {
-            node.right.parent = node;
-        }
-
-        nodeRight.parent = node.parent;
-
-        if (node.parent == null) {
-            root = nodeRight;
-        } else if (node == node.parent.left) {
-            node.parent.left = nodeRight;
-        } else {
-            node.parent.right = nodeRight;
-        }
-
-        nodeRight.left = node;
-        node.parent = nodeRight;
-
-        return root;
-    }
-
+		node.right = r.left;
+		if(node.right != null){
+			node.right.parent = node;
+		}
+		r.parent = p;
+		if (node.parent == null){
+			root = r;
+		}else if(node == node.parent.right){
+			node.parent.right = r;
+		}else{
+			node.parent.left = r;
+		}
+		r.left = node;
+		node.parent = r;
+		return root;
+	}
 
     /**
      * Performs right rotation
@@ -149,30 +144,25 @@ public class RBTree {
      * @param node the node to which the rotation is referred
      * @return the root node after the right rotation is completed
      */
-    static RBNode rotateRight(RBNode root, RBNode node) {
-        RBNode nodeLeft = node.left;
-
-        node.left = nodeLeft.right;
-
-        if (node.left != null) {
-            node.left.parent = node;
-        }
-
-        nodeLeft.parent = node.parent;
-
-        if (node.parent == null) {
-            root = nodeLeft;
-        } else if (node == node.parent.left) {
-            node.parent.left = nodeLeft;
-        } else {
-            node.parent.right = nodeLeft;
-        }
-
-        nodeLeft.right = node;
-        node.parent = nodeLeft;
-        return root;
-    }
-
+	static RBNode rotateRight(RBNode root, RBNode node) {
+		RBNode p = node.parent;
+		RBNode l = node.left;
+		node.left = l.right;
+		if(node.left != null){
+			node.left.parent = node;
+		}
+		l.parent = p;
+		if(node.parent == null){
+			root = l;
+		}else if(node == node.parent.right){
+			node.parent.right = l;
+		}else{
+			node.parent.left = l;
+		}
+		l.right = node;
+		node.parent = l;
+		return root;
+	}
 
     /**
      * Finding the node of the given key in the RBT

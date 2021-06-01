@@ -34,39 +34,30 @@ public class AVLTree {
     }
 
     static AVLNode AVLFix(AVLNode root, AVLNode newNode){
-        int key;
         AVLNode prev = newNode.parent;
         while (prev != null) {
             prev.height = 1 + Math.max(getHeight(prev.left), getHeight(prev.right));
             int bal = getBalanceFactor(prev);
-            key = prev.key;
             if(Math.abs(bal) > 1) {
                 if (bal > 1) {
                     if (newNode.key > prev.left.key) {
                         // Reassigning left child with left rotation and rotating right root
-                        prev.left = leftRotate(prev.left);
-                        prev = rightRotate(prev);
+                        root = leftRotate(root, prev.left);
+                        root = rightRotate(root, prev);
                     } else {   // Left left case
-                        prev = rightRotate(prev);
+                        root = rightRotate(root, prev);
                     }
                 } else if (bal < -1) {
                     // Right left case
                     if (newNode.key < prev.right.key) {
                         // Reassigning right child with right rotation and rotating left root
-                        prev.right = rightRotate(prev.right);
-                        prev = leftRotate(prev);
+                        root = rightRotate(root, prev.right);
+                        root = leftRotate(root, prev);
                     } else {
                         // Left rotation
-                        prev = leftRotate(prev);
+                        root = leftRotate(root, prev);
                     }
                 }
-                // Updating parent of rotated subtree in case of rotations
-                if(prev.parent == null)
-                    root = prev;
-                else if(key > prev.parent.key)
-                    prev.parent.right = prev;
-                else
-                    prev.parent.left = prev;
             }
             // updating prev
             prev = prev.parent;
@@ -108,24 +99,29 @@ public class AVLTree {
         }
     }
 
-
     /**
      * Performs left rotation algorithm to maintain AVL tree balance property
      * @param node the node that will be rotated
      * @return node after rotation
      */
-     private static AVLNode leftRotate(AVLNode node) {
+     private static AVLNode leftRotate(AVLNode root, AVLNode node) {
         AVLNode p = node.parent;
         AVLNode r = node.right;
         node.right = r.left;
-        if(r.left != null)
-            r.left.parent = node;
+        if(node.right != null)
+            node.right.parent = node;
+        r.parent = p;
+        if(node.parent == null)
+            root = r;
+        else if(node == node.parent.right)
+            node.parent.right = r;
+        else
+            node.parent.left = r;
         r.left = node;
         node.parent = r;
-        r.parent = p;
         node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
         r.height = Math.max(getHeight(r.left), getHeight(r.right)) + 1;
-        return r;
+        return root;
     }
 
 
@@ -134,27 +130,32 @@ public class AVLTree {
      * @param node the node that will be rotated
      * @return node after rotation
      */
-     private static AVLNode rightRotate(AVLNode node) {
+     private static AVLNode rightRotate(AVLNode root, AVLNode node) {
         AVLNode p = node.parent;
         AVLNode l = node.left;
         node.left = l.right;
-        if(l.right != null)
-            l.right.parent = node;
+        if(node.left != null)
+            node.left.parent = node;
+        l.parent = p;
+        if(node.parent == null)
+            root = l;
+        else if(node == node.parent.right)
+            node.parent.right = l;
+        else
+            node.parent.left = l;
         l.right = node;
         node.parent = l;
-        l.parent = p;
         node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
         l.height = Math.max(getHeight(l.left), getHeight(l.right)) + 1;
-        return l;
+        return root;
     }
-
 
     /**
      * Computes balance factor for a given node according to leaf's heights
      * @param node the node
      * @return 0 if the node is null, balance factor value otherwise
      */
-    private static int getBalanceFactor(AVLNode node) {
+   	static int getBalanceFactor(AVLNode node) {
         if(node == null)
             return 0;
         else

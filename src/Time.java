@@ -35,7 +35,7 @@ public class Time {
                 rng.generateRandomKey();
                 keys = rng.getKeys();
                 for (int iter_length = 0; iter_length < 50; iter_length++) {
-                    System.out.print("\rWarming up JVM... ");
+                	System.out.print("\rWarming up JVM...");
                     getExTimeBSTree(n, keys, maxError);
                     getExTimeAVLTree(n, keys, maxError);
                     getExTimeRBTree(n, keys, maxError);
