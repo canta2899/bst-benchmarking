@@ -9,7 +9,7 @@ public class Excel {
     public static void main(String[] args) {
         try {
             String templateName = "Time_Template.xlsx";
-            String fileName = "TimeIterative.xlsx";
+            String fileName = "Time.xlsx";
 
             Files.copy(Paths.get(templateName), Paths.get(fileName), REPLACE_EXISTING);
             //Initializing a new excel file and sheet in which data will be registered

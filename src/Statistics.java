@@ -1,9 +1,8 @@
 import java.util.Vector;
 
 /**
- * NOT USED ANYMORE SINCE EXCEL INTEGRATION. WAS USED TO COMPUTE STATISTICS
+ * Can be used to compute statistics if you're not using Excel files
  */
-@Deprecated
 class Statistics {
     private Vector<Long> bsTimes;
     private Vector<Long> avlTimes;
