@@ -1,0 +1,30 @@
+library(ggplot2)
+library(tidyverse)
+library(readxl)
+
+# Creazione del csv dal xlsx
+time <- write_csv(read_excel("../Time.xlsx", 101), "Time.csv")
+
+time <- time %>%
+  gather(key = "tree_type", value = "ex_time", -n_nodi) %>%
+  mutate(ex_time = ex_time / 10^9)
+
+ggplot(data = time, aes(x = n_nodi, y = ex_time, color = tree_type)) +
+  geom_point() +
+  geom_line() +
+  stat_smooth(method="gam") +
+  labs(y = "Execution time") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  theme(legend.position = c(.10, .90), legend.background = element_rect(fill = "transparent"), legend.title=element_blank())
+ggsave("Confronto_Mediane.png")
+
+ggplot(data = time, aes(x = n_nodi, y = ex_time, color = tree_type)) +
+  geom_point() +
+  geom_line() +
+  stat_smooth(method="gam") +
+  labs(y = "Execution time") +
+  scale_x_log10() +
+  scale_y_log10() +
+  theme(legend.position = c(.10, .90), legend.background = element_rect(fill = "transparent"), legend.title=element_blank())
+ggsave("Confronto_Mediane_log.png")
