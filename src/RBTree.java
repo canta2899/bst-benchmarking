@@ -52,51 +52,51 @@ public class RBTree {
             parentNewNode = newNode.parent;
             gpNewNode = newNode.parent.parent;
 
-            // A
+            // A (parent is left child of gp)
             if (parentNewNode == gpNewNode.left) {
 
                 RBNode uncle = gpNewNode.right;
 
-                // 1
+                // 1  (uncle is red)
                 if (uncle != null && uncle.color == 1) {
                     gpNewNode.color = 1;
                     parentNewNode.color = 0;
                     uncle.color = 0;
                     newNode = gpNewNode;
                 } else {
-                    // 2
+                    // 2  (p right child of parent, so rotate left)
                     if (newNode == parentNewNode.right) {
                         root = rotateLeft(root, parentNewNode);
                         newNode = parentNewNode;
                         parentNewNode = newNode.parent;
                     }
 
-                    // 3
+                    // 3 (p is now left child of its parent and i can right rotate to gp)
                     root = rotateRight(root, gpNewNode);
                     temp = parentNewNode.color;
                     parentNewNode.color = gpNewNode.color;
                     gpNewNode.color = (int)temp;
                     newNode = parentNewNode;
                 }
-            } else {    // B
+            } else {    // B parent of pt is right child of gp
 
                 RBNode uncle = gpNewNode.left;
 
-                // 1
+                // 1  (uncle is red)
                 if ((uncle != null) && (uncle.color == 1)) {
                     gpNewNode.color = 1;
                     parentNewNode.color = 0;
                     uncle.color = 0;
                     newNode = gpNewNode;
                 } else {
-                    // 2
+                    // 2  (p is left child of its parent, apply right rotation)
                     if (newNode == parentNewNode.left) {
                         root = rotateRight(root, parentNewNode);
                         newNode = parentNewNode;
                         parentNewNode = newNode.parent;
                     }
 
-                    // 3
+                    // 3  (p is now right child of its parent so i can apply left rotation on gp)
                     root = rotateLeft(root, gpNewNode);
                     temp = parentNewNode.color;
                     parentNewNode.color = gpNewNode.color;
@@ -106,7 +106,7 @@ public class RBTree {
             }
         }
 
-        root.color = 0;
+        root.color = 0; // Root is always black
         return root;
     }
 

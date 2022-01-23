@@ -3,6 +3,10 @@ relazione_template.docx
 out/*
 R/.RData
 R/.Rhistory
+R/plots.Rmd
 R/plots.nb.html
+R/*.png
 R/Time.csv
+results
 SecondoProgettoASD.iml
+.DS_Store

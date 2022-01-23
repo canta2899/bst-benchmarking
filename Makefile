@@ -2,6 +2,8 @@ SRC_DIR := src
 
 OUT_DIR := out/production/SecondoProgettoASD
 
+RES_DIR := results
+
 SRCS := $(wildcard $(SRC_DIR)/*.java)
 
 CLS := $(SRCS:$(SRC_DIR)/%.java=$(OUT_DIR)/%.class)
@@ -17,11 +19,14 @@ JCFLAGS := -d $(OUT_DIR) -cp $(CP)
 JCFLAGS_EXEC := -cp $(CP_EXEC)
 
 .SUFFIXES: .java
-.PHONY: build clean execute
+.PHONY: build clean execute dir
 .DEFAULT_GOAL := build 
 
 build: dir $(CLS)
 	@echo "Compilation done"
+
+results:
+	@mkdir -p results
 
 dir:
 	@mkdir -p $(OUT_DIR)
@@ -33,5 +38,10 @@ clean:
 	@rm $(OUT_DIR)/*.class
 	@echo "Binaries removed"
 
-execute:
+execute: results
 	@java $(JCFLAGS_EXEC) Time
+
+graphs:
+	@echo "Building graphs..."
+	@Rscript ./R/plots.R
+	@echo "Done. Graphs can be found inside results folder"

@@ -1,4 +1,5 @@
 import java.util.Vector;
+import java.util.Collections;
 
 /**
  * Can be used to compute statistics if you're not using Excel files
@@ -41,8 +42,7 @@ class Statistics {
         rbTimes.add(time);
     }
 
-
-    /**
+	/**
      * Computes the mean for the binary search execution times Vector
      * @return the mean
      */
@@ -79,6 +79,38 @@ class Statistics {
         }
         return sum / (rbTimes.size());
     }
+
+    /**
+     * Computes the mean for the binary search execution times Vector
+     * @return the mean
+     */
+    long computeBsMedian(){
+		Collections.sort(this.bsTimes);
+		return this.bsTimes.get(25);
+    }
+
+
+    /**
+     * Computes the mean for the avl execution times Vector
+     * @return the mean
+     */
+    long computeAvlMedian(){
+		Collections.sort(this.avlTimes);
+		return this.bsTimes.get(25);
+    }
+
+
+    /**
+     * Computes the mean for the red black execution times Vector
+     * @return the mean
+     */
+    long computeRbMedian(){
+		Collections.sort(this.rbTimes);
+		return this.bsTimes.get(25);
+    }
+
+
+
 
 
     /**
