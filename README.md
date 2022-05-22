@@ -10,9 +10,7 @@ This repository provides a software developed as one of the projects assigned du
 
 The software was developed using the **Java** programming language and runs operations of research and insertion over the three kinds of trees with random inputs of various dimensionality according to the following function: 
 
-```
-n = 1.116^{i} * 10
-```
+$$\large{n \\; = \\; 1.116^{i} \\; \cdot \\; 10}$$
 
 Moreover, we provided a **functional** implementation for all the algorithms and performed a [**JVM Warmup**](https://www.baeldung.com/java-jvm-warmup) (that pushes the classes into the Java Virtual Machine's cache to get constant and fast access at runtime) in order to obtain accurate results
 
